@@ -14,16 +14,20 @@ grad ={@(x) 1 + 4*x(1) + 2*x(2) , ...
        @(x) -1 + 2*x(1) + 2*x(2)};
 
 %% Plot mesh
-x = linspace(-2,3,100);
-[m_x, m_y] = meshgrid(x,x);
+x = linspace(-2,1,100);
+y = linspace(-1,3,100);
+[m_x, m_y] = meshgrid(x,y);
 z = f([m_x(:) m_y(:)]);
-mesh(x,x,reshape(z,[numel(x) numel(x)]))
-figure, contour(x,x,reshape(z,[numel(x) numel(x)]), 30)
+mesh(x,y,reshape(z,[numel(x) numel(y)]))
+%figure, contour(x,y,reshape(z,[numel(x) numel(y)]), 30)
 hold on
 
 %% Optimization
 % Starting point
 X0 = [0 0];
-[X,S,fX,i] = steepestDescent(f,grad, X0);
-scatter3(X(:,1),X(:,2),f(X),'filled', 'MarkerFaceColor', 'red')
+[X_sD,S_sD,fX_sD,i_sD] = steepestDescent(f,grad, X0);
+scatter3(X_sD(:,1),X_sD(:,2),f(X_sD),'filled', 'MarkerFaceColor', 'red')
+
+[X_cG,S_cG,fX_cG,i_cG] = conjugateGradient(f,grad, X0);
+scatter3(X_cG(:,1),X_cG(:,2),f(X_cG),'filled', 'MarkerFaceColor', 'green')
 
